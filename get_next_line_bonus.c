@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vscode <vscode@student.42.fr>              +#+  +:+       +#+        */
+/*   By: pdavi-al <pdavi-al@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/21 03:32:54 by vscode            #+#    #+#             */
-/*   Updated: 2023/05/29 07:28:55 by vscode           ###   ########.fr       */
+/*   Updated: 2023/06/01 20:35:19 by pdavi-al         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,58 +14,17 @@
 
 char	*get_next_line(int fd)
 {
-	char				*line;
-	static t_fd_list	*lst;
-	t_fd_list			*current_node;
+	char		*line;
+	static char	*memory[4096];
 
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
-	current_node = find_or_create_node(&lst, fd);
-	if (current_node == NULL)
+	memory[fd] = read_line_break(fd, memory[fd]);
+	if (memory[fd] == NULL)
 		return (NULL);
-	current_node->memory = read_line_break(fd, current_node->memory);
-	if (current_node == NULL)
-		return (NULL);
-	if (current_node->memory == NULL)
-		return (NULL);
-	line = get_whole_line(current_node->memory);
-	if (line == NULL)
-		return (NULL);
-	current_node->memory = clear_memory(current_node->memory);
+	line = get_whole_line(memory[fd]);
+	memory[fd] = clear_memory(memory[fd]);
 	return (line);
-}
-
-t_fd_list	*find_or_create_node(t_fd_list **lst, int fd)
-{
-	t_fd_list	*finded;
-	t_fd_list	*frist;
-
-	if (*lst != NULL)
-	{
-		frist = *lst;
-		while (1)
-		{
-			if ((*lst)->fd == fd)
-				return (*lst);
-			if ((*lst)->next == NULL)
-				break ;
-			*lst = (*lst)->next;
-		}
-	}
-	finded = malloc(1 * sizeof(t_fd_list));
-	if (finded == NULL)
-		return (NULL);
-	if (*lst != NULL)
-	{
-		*lst = frist;
-		(*lst)->next = finded;
-	}
-	else
-		*lst = finded;
-	(finded)->fd = fd;
-	(finded)->memory = NULL;
-	(finded)->next = NULL;
-	return (finded);
 }
 
 char	*read_line_break(int fd, char *memory)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vscode <vscode@student.42.fr>              +#+  +:+       +#+        */
+/*   By: pdavi-al <pdavi-al@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/21 03:32:54 by vscode            #+#    #+#             */
-/*   Updated: 2023/05/21 15:28:43 by vscode           ###   ########.fr       */
+/*   Updated: 2023/06/01 20:35:30 by pdavi-al         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,6 @@ char	*get_next_line(int fd)
 	if (memory == NULL)
 		return (NULL);
 	line = get_whole_line(memory);
-	if (line == NULL)
-		return (NULL);
 	memory = clear_memory(memory);
 	return (line);
 }
